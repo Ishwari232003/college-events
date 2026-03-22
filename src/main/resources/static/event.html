@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Event — SGBIT College</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --peach:      #ff9a6c; --peach-pale: #fff1eb; --peach-bg: #fff8f4;
+  --peach-deep: #e8673a; --rose: #f4756b; --ink: #2a1f1a; --ink2: #5a4035;
+  --muted: #9c7b6e; --muted2: #c4a393; --border: rgba(255,154,108,0.18);
+  --border2: rgba(255,154,108,0.32); --surface: #ffffff;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--peach-bg); color: var(--ink); min-height: 100vh; }
+nav { position: fixed; top: 0; left: 0; right: 0; z-index: 200; height: 62px; display: flex; align-items: center; justify-content: space-between; padding: 0 48px; background: rgba(255,248,244,0.94); backdrop-filter: blur(18px); border-bottom: 1px solid var(--border2); }
+.nav-logo { display: flex; align-items: center; gap: 10px; }
+.nav-logo-icon { width: 34px; height: 34px; background: linear-gradient(135deg, var(--peach), var(--peach-deep)); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1rem; }
+.nav-logo-text { font-family: 'Cormorant Garamond', serif; font-size: 1.25rem; font-weight: 700; color: var(--ink); }
+.nav-logo-text span { color: var(--peach-deep); }
+.back-link { display: flex; align-items: center; gap: 7px; font-size: 0.8rem; font-weight: 600; color: var(--muted); text-decoration: none; padding: 8px 16px; border-radius: 8px; border: 1.5px solid var(--border2); transition: color .18s, border-color .18s, background .18s; }
+.back-link:hover { color: var(--peach-deep); border-color: var(--peach); background: var(--peach-pale); }
+.event-hero { padding-top: 62px; position: relative; overflow: hidden; min-height: 46vh; display: flex; align-items: flex-end; }
+.hero-glow { position: absolute; inset: 0; pointer-events: none; }
+.hero-dots { position: absolute; inset: 0; pointer-events: none; opacity: 0.22; background-image: radial-gradient(circle, rgba(255,154,108,0.7) 1px, transparent 1px); background-size: 28px 28px; mask-image: radial-gradient(ellipse 80% 80% at 90% 10%, black 0%, transparent 65%); }
+.hero-content { position: relative; padding: 56px 48px 48px; width: 100%; max-width: 880px; animation: fadeUp .5s ease both; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
+.hero-cat-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 0.68rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; padding: 5px 13px; border-radius: 5px; margin-bottom: 18px; }
+.hero-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.2rem, 5.5vw, 4rem); font-weight: 700; line-height: 1.05; letter-spacing: -0.01em; color: var(--ink); margin-bottom: 14px; }
+.hero-venue { font-size: 0.92rem; color: var(--muted); display: flex; align-items: center; gap: 6px; }
+.event-body { max-width: 880px; padding: 0 48px 100px; animation: fadeUp .5s .1s ease both; }
+.meta-strip { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1px; background: var(--border2); border: 1.5px solid var(--border2); border-radius: 14px; overflow: hidden; margin: 36px 0 48px; }
+.meta-item { background: var(--surface); padding: 20px 22px; }
+.meta-lbl { font-size: 0.62rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--muted2); margin-bottom: 7px; }
+.meta-val { font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; font-weight: 700; color: var(--ink); line-height: 1.3; }
+.meta-val.deadline { color: var(--rose); }
+.about-label { font-size: 0.68rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--peach-deep); margin-bottom: 14px; }
+.about-text { font-size: 1.05rem; line-height: 1.88; color: var(--ink2); max-width: 660px; margin-bottom: 52px; font-weight: 400; }
+.cta-box { background: var(--surface); border: 1.5px solid var(--border2); border-radius: 16px; padding: 32px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; position: relative; overflow: hidden; }
+.cta-box::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 5px; background: linear-gradient(to bottom, var(--peach), var(--peach-deep)); }
+.cta-info h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 700; color: var(--ink); margin-bottom: 5px; }
+.cta-info p { font-size: 0.82rem; color: var(--muted); max-width: 360px; line-height: 1.6; }
+.cta-btns { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.btn-apply { display: inline-flex; align-items: center; gap: 8px; padding: 13px 26px; border-radius: 10px; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.88rem; font-weight: 700; color: #fff; text-decoration: none; background: linear-gradient(135deg, var(--peach), var(--peach-deep)); box-shadow: 0 4px 18px rgba(232,103,58,.3); transition: transform .18s, box-shadow .18s; border: none; cursor: pointer; }
+.btn-apply:hover { transform: translateY(-2px); box-shadow: 0 7px 24px rgba(232,103,58,.4); }
+.btn-back { display: inline-flex; align-items: center; gap: 7px; padding: 13px 20px; border-radius: 10px; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.88rem; font-weight: 600; color: var(--muted); background: none; border: 1.5px solid var(--border2); cursor: pointer; text-decoration: none; transition: color .18s, border-color .18s; }
+.btn-back:hover { color: var(--peach-deep); border-color: var(--peach); }
+.loading { text-align: center; padding: 120px 40px; color: var(--muted); font-size: 0.95rem; }
+footer { background: var(--ink); color: rgba(255,255,255,.35); text-align: center; padding: 24px 48px; font-size: 0.75rem; letter-spacing: .04em; }
+footer strong { color: rgba(255,255,255,.6); }
+@media (max-width: 640px) {
+  nav { padding: 0 18px; }
+  .hero-content, .event-body { padding-left: 18px; padding-right: 18px; }
+  .cta-box { flex-direction: column; align-items: flex-start; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">
+    <div class="nav-logo-icon">🎓</div>
+    <div class="nav-logo-text">SGBIT <span>College</span></div>
+  </div>
+  <a href="index.html" class="back-link">← Back to Events</a>
+</nav>
+
+<div id="event-hero" class="event-hero">
+  <div class="hero-glow" id="hero-glow"></div>
+  <div class="hero-dots"></div>
+  <div class="hero-content" id="hero-content">
+    <div class="loading">Loading event...</div>
+  </div>
+</div>
+
+<div class="event-body" id="event-body"></div>
+
+<footer>
+  &copy; 2026 <strong>SGBIT College</strong> · Student Affairs Division
+</footer>
+
+<script>
+const API = 'http://localhost:8080/api';
+
+const catMeta = {
+  academic:  { color:'#4a8bba', bg:'rgba(91,164,212,0.08)',   glow:'rgba(91,164,212,0.13)',  label:'Academic',    emoji:'📚' },
+  technical: { color:'#8060b8', bg:'rgba(155,126,212,0.08)',  glow:'rgba(155,126,212,0.13)', label:'Technical',   emoji:'💻' },
+  cultural:  { color:'#d45a50', bg:'rgba(244,117,107,0.08)',  glow:'rgba(244,117,107,0.14)', label:'Cultural',    emoji:'🎭' },
+  sports:    { color:'#4d9a6e', bg:'rgba(109,179,138,0.08)',  glow:'rgba(109,179,138,0.13)', label:'Sports',      emoji:'⚽' },
+  social:    { color:'#a87800', bg:'rgba(240,165,0,0.08)',    glow:'rgba(240,165,0,0.13)',   label:'Social/Fest', emoji:'🎉' },
+  awareness: { color:'#4d9a6e', bg:'rgba(109,179,138,0.08)', glow:'rgba(109,179,138,0.13)', label:'Awareness',   emoji:'🌱' },
+};
+
+const fmtFull  = s => new Date(s).toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+
+const params = new URLSearchParams(location.search);
+const id = params.get('id');
+
+async function loadEvent() {
+  try {
+    const res = await fetch(`${API}/events/${id}`);
+    if (!res.ok) throw new Error('Not found');
+    const ev = await res.json();
+    renderEvent(ev);
+  } catch(e) {
+    document.getElementById('hero-content').innerHTML =
+      '<div class="loading">⚠️ Event not found or server not running.</div>';
+  }
+}
+
+function renderEvent(ev) {
+  const slug = ev.category.slug;
+  const cm = catMeta[slug] || catMeta.academic;
+  document.title = ev.title + ' — SGBIT College';
+
+  document.getElementById('hero-glow').style.background =
+    `radial-gradient(ellipse 65% 90% at 65% 50%, ${cm.glow} 0%, transparent 65%), #fff8f4`;
+
+  document.getElementById('hero-content').innerHTML = `
+    <div class="hero-cat-badge" style="background:${cm.bg};color:${cm.color};">${cm.emoji} ${ev.subcategory}</div>
+    <div class="hero-title">${ev.title}</div>
+    <div class="hero-venue">📍 ${ev.venue}</div>`;
+
+  document.getElementById('event-body').innerHTML = `
+    <div class="meta-strip">
+      <div class="meta-item">
+        <div class="meta-lbl">Event Date</div>
+        <div class="meta-val">${fmtFull(ev.eventDate)}</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-lbl">Registration Closes</div>
+        <div class="meta-val deadline">${fmtFull(ev.regDeadline)}</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-lbl">Category</div>
+        <div class="meta-val">${cm.emoji} ${cm.label}</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-lbl">Venue</div>
+        <div class="meta-val">${ev.venue}</div>
+      </div>
+    </div>
+    <div class="about-label">About this Event</div>
+    <div class="about-text">${ev.description}</div>
+    <div class="cta-box">
+      <div class="cta-info">
+        <h3>Interested? Register now 🌸</h3>
+        <p>You'll be taken to the official registration page managed by the event organiser.</p>
+      </div>
+      <div class="cta-btns">
+        <a href="${ev.regLink}" target="_blank" rel="noopener" class="btn-apply">Apply / Register ↗</a>
+        <a href="index.html" class="btn-back">← Back</a>
+      </div>
+    </div>`;
+}
+
+loadEvent();
+</script>
+</body>
+</html>

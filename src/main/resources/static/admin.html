@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Admin Panel — SGBIT College Events</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --peach:      #ff9a6c;
+  --peach-pale: #fff1eb;
+  --peach-bg:   #fff8f4;
+  --peach-deep: #e8673a;
+  --rose:       #f4756b;
+  --ink:        #2a1f1a;
+  --ink2:       #5a4035;
+  --muted:      #9c7b6e;
+  --muted2:     #c4a393;
+  --border:     rgba(255,154,108,0.18);
+  --border2:    rgba(255,154,108,0.35);
+  --surface:    #ffffff;
+  --success:    #2d7a4f;
+  --success-bg: #f0faf4;
+  --danger:     #c0392b;
+  --danger-bg:  #fff5f5;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background: var(--peach-bg);
+  color: var(--ink);
+  min-height: 100vh;
+}
+
+/* ── LOGIN SCREEN ── */
+#login-screen {
+  min-height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+  padding: 24px;
+  background: var(--peach-bg);
+  position: relative; overflow: hidden;
+}
+.login-blob1 {
+  position: absolute; top: -120px; right: -80px;
+  width: 500px; height: 500px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,154,108,0.18) 0%, transparent 70%);
+  pointer-events: none;
+}
+.login-blob2 {
+  position: absolute; bottom: -100px; left: -100px;
+  width: 380px; height: 380px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(244,117,107,0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+.login-card {
+  background: var(--surface);
+  border: 1.5px solid var(--border2);
+  border-radius: 20px;
+  padding: 48px 44px;
+  width: 100%; max-width: 420px;
+  position: relative;
+  box-shadow: 0 8px 48px rgba(255,154,108,0.12);
+  animation: fadeUp .5s ease both;
+}
+@keyframes fadeUp { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
+
+.login-logo {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 32px;
+}
+.login-logo-icon {
+  width: 38px; height: 38px;
+  background: linear-gradient(135deg, var(--peach), var(--peach-deep));
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem;
+}
+.login-logo-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.3rem; font-weight: 700; color: var(--ink);
+}
+.login-logo-text span { color: var(--peach-deep); }
+
+.login-eyebrow {
+  font-size: 0.68rem; font-weight: 700;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: var(--peach-deep); margin-bottom: 8px;
+}
+.login-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.9rem; font-weight: 700;
+  color: var(--ink); margin-bottom: 6px;
+}
+.login-sub {
+  font-size: 0.82rem; color: var(--muted);
+  margin-bottom: 32px; line-height: 1.6;
+}
+
+.field-label {
+  display: block;
+  font-size: 0.75rem; font-weight: 700;
+  letter-spacing: .06em; text-transform: uppercase;
+  color: var(--ink2); margin-bottom: 8px;
+}
+.field-input {
+  width: 100%;
+  padding: 13px 16px;
+  border: 1.5px solid var(--border2);
+  border-radius: 10px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.92rem; color: var(--ink);
+  background: var(--peach-bg);
+  outline: none;
+  transition: border-color .18s, box-shadow .18s, background .18s;
+  margin-bottom: 20px;
+}
+.field-input:focus {
+  border-color: var(--peach-deep);
+  background: var(--surface);
+  box-shadow: 0 0 0 3px rgba(232,103,58,.12);
+}
+.field-input[type="password"] { letter-spacing: .1em; }
+.field-input::placeholder { color: var(--muted2); letter-spacing: 0; }
+
+.login-btn {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, var(--peach), var(--peach-deep));
+  color: #fff; border: none;
+  border-radius: 10px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.92rem; font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 18px rgba(232,103,58,.3);
+  transition: transform .18s, box-shadow .18s;
+  margin-bottom: 16px;
+}
+.login-btn:hover { transform: translateY(-1px); box-shadow: 0 7px 24px rgba(232,103,58,.4); }
+.login-btn:active { transform: translateY(0); }
+
+.login-error {
+  display: none;
+  background: var(--danger-bg);
+  border: 1px solid rgba(192,57,43,.2);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 0.8rem; color: var(--danger);
+  font-weight: 600; text-align: center;
+}
+.login-hint {
+  text-align: center; margin-top: 16px;
+  font-size: 0.75rem; color: var(--muted);
+}
+.login-hint code {
+  background: var(--peach-pale);
+  color: var(--peach-deep); font-weight: 700;
+  padding: 2px 7px; border-radius: 4px;
+  font-family: monospace;
+}
+.back-to-site {
+  display: block; text-align: center; margin-top: 20px;
+  font-size: 0.78rem; color: var(--muted);
+  text-decoration: none;
+  transition: color .18s;
+}
+.back-to-site:hover { color: var(--peach-deep); }
+
+/* ── ADMIN DASHBOARD ── */
+#admin-screen { display: none; }
+
+/* NAV */
+.admin-nav {
+  background: var(--ink);
+  height: 60px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 40px;
+  border-bottom: 3px solid var(--peach-deep);
+  position: sticky; top: 0; z-index: 100;
+}
+.admin-nav-logo {
+  display: flex; align-items: center; gap: 10px;
+}
+.admin-nav-icon {
+  width: 30px; height: 30px;
+  background: linear-gradient(135deg, var(--peach), var(--peach-deep));
+  border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.85rem;
+}
+.admin-nav-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem; font-weight: 700; color: #fff;
+}
+.admin-nav-title span { color: var(--peach-light, #ffb899); font-style: italic; }
+.admin-nav-right { display: flex; align-items: center; gap: 12px; }
+.nav-view-site {
+  font-size: 0.75rem; font-weight: 600;
+  color: rgba(255,255,255,.5); text-decoration: none;
+  padding: 6px 14px; border-radius: 6px;
+  border: 1px solid rgba(255,255,255,.12);
+  transition: color .18s, border-color .18s;
+}
+.nav-view-site:hover { color: #fff; border-color: rgba(255,255,255,.3); }
+.logout-btn {
+  font-size: 0.75rem; font-weight: 700;
+  color: var(--peach); background: none;
+  border: 1px solid rgba(255,154,108,.3);
+  padding: 6px 14px; border-radius: 6px;
+  cursor: pointer; font-family: 'Plus Jakarta Sans', sans-serif;
+  transition: background .18s, color .18s;
+}
+.logout-btn:hover { background: rgba(255,154,108,.1); color: #fff; }
+
+/* LAYOUT */
+.admin-layout {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: 28px;
+  padding: 32px 40px 80px;
+  max-width: 1200px;
+  margin: 0 auto;
+  align-items: start;
+}
+
+/* FORM PANEL */
+.form-panel {
+  background: var(--surface);
+  border: 1.5px solid var(--border2);
+  border-radius: 16px;
+  overflow: hidden;
+  position: sticky; top: 88px;
+}
+.panel-header {
+  padding: 22px 26px 18px;
+  border-bottom: 1.5px solid var(--border);
+  background: var(--peach-pale);
+}
+.panel-header-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.25rem; font-weight: 700; color: var(--ink);
+  margin-bottom: 2px;
+}
+.panel-header-sub { font-size: 0.75rem; color: var(--muted); }
+
+.form-body { padding: 24px 26px; }
+.form-row { margin-bottom: 18px; }
+.form-label {
+  display: block;
+  font-size: 0.7rem; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase;
+  color: var(--ink2); margin-bottom: 7px;
+}
+.form-label .req { color: var(--peach-deep); margin-left: 2px; }
+.form-input, .form-select, .form-textarea {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1.5px solid var(--border2);
+  border-radius: 9px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.85rem; color: var(--ink);
+  background: var(--peach-bg);
+  outline: none;
+  transition: border-color .18s, box-shadow .18s, background .18s;
+}
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+  border-color: var(--peach-deep);
+  background: var(--surface);
+  box-shadow: 0 0 0 3px rgba(232,103,58,.1);
+}
+.form-select { appearance: none; cursor: pointer; }
+.form-select-wrap { position: relative; }
+.form-select-wrap::after {
+  content: '▾'; position: absolute; right: 12px; top: 50%;
+  transform: translateY(-50%); color: var(--muted); pointer-events: none;
+  font-size: 0.8rem;
+}
+.form-textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
+
+.form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+.submit-btn {
+  width: 100%;
+  padding: 13px;
+  background: linear-gradient(135deg, var(--peach), var(--peach-deep));
+  color: #fff; border: none; border-radius: 10px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.9rem; font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(232,103,58,.28);
+  transition: transform .18s, box-shadow .18s;
+  margin-top: 4px;
+}
+.submit-btn:hover { transform: translateY(-1px); box-shadow: 0 7px 22px rgba(232,103,58,.38); }
+
+/* SUCCESS TOAST */
+.toast {
+  display: none;
+  align-items: center; gap: 10px;
+  background: var(--success-bg);
+  border: 1px solid rgba(45,122,79,.2);
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin-top: 14px;
+  font-size: 0.8rem; color: var(--success); font-weight: 600;
+}
+.toast.show { display: flex; animation: fadeUp .3s ease; }
+
+/* RIGHT PANEL */
+.list-panel {}
+.list-panel-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 18px;
+}
+.list-panel-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.5rem; font-weight: 700; color: var(--ink);
+}
+.list-count {
+  font-size: 0.78rem; color: var(--muted); font-weight: 500;
+}
+.list-count strong { color: var(--peach-deep); }
+
+/* SEARCH */
+.list-search-wrap { position: relative; margin-bottom: 16px; }
+.list-search-icon { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); font-size: 0.85rem; color: var(--muted2); }
+.list-search {
+  width: 100%; padding: 10px 14px 10px 38px;
+  border: 1.5px solid var(--border2); border-radius: 9px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.85rem; color: var(--ink); background: var(--surface);
+  outline: none; transition: border-color .18s, box-shadow .18s;
+}
+.list-search:focus { border-color: var(--peach-deep); box-shadow: 0 0 0 3px rgba(232,103,58,.1); }
+.list-search::placeholder { color: var(--muted2); }
+
+/* EVENT ROWS */
+.admin-event-list { display: flex; flex-direction: column; gap: 10px; }
+
+.admin-event-row {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 18px;
+  display: grid;
+  grid-template-columns: 56px 1fr auto;
+  align-items: center; gap: 14px;
+  transition: border-color .18s, box-shadow .18s;
+  animation: fadeUp .3s ease both;
+  position: relative; overflow: hidden;
+}
+.admin-event-row::before {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+  width: 3px; background: var(--row-accent, var(--peach));
+}
+.admin-event-row:hover { border-color: var(--border2); box-shadow: 0 3px 16px rgba(255,154,108,.1); }
+
+.arow-date {
+  text-align: center;
+  background: var(--peach-pale);
+  border-radius: 8px; padding: 8px 6px;
+}
+.arow-date-day {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.5rem; font-weight: 700;
+  color: var(--peach-deep); line-height: 1;
+}
+.arow-date-mon {
+  font-size: 0.55rem; font-weight: 700;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--muted); margin-top: 2px;
+}
+
+.arow-main { min-width: 0; }
+.arow-badge {
+  display: inline-block;
+  font-size: 0.58rem; font-weight: 700;
+  letter-spacing: .1em; text-transform: uppercase;
+  padding: 2px 7px; border-radius: 3px; margin-bottom: 5px;
+}
+.arow-title {
+  font-weight: 700; font-size: 0.9rem; color: var(--ink);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  margin-bottom: 3px;
+}
+.arow-meta { font-size: 0.72rem; color: var(--muted); }
+
+.arow-actions { display: flex; flex-direction: column; gap: 6px; align-items: flex-end; }
+.reg-tag {
+  font-size: 0.65rem; font-weight: 600;
+  color: var(--muted); white-space: nowrap;
+}
+.reg-tag.closed { color: var(--danger); }
+.delete-btn {
+  background: none; border: 1.5px solid rgba(192,57,43,.2);
+  border-radius: 6px; padding: 5px 12px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.72rem; font-weight: 700;
+  color: var(--danger); cursor: pointer;
+  transition: background .18s, border-color .18s;
+}
+.delete-btn:hover { background: var(--danger-bg); border-color: rgba(192,57,43,.4); }
+
+.row-academic   { --row-accent: #5ba4d4; }
+.row-technical  { --row-accent: #9b7ed4; }
+.row-cultural   { --row-accent: #f4756b; }
+.row-sports     { --row-accent: #6db38a; }
+.row-social     { --row-accent: #f0a500; }
+.row-awareness  { --row-accent: #6db38a; }
+
+.badge-academic   { background: rgba(91,164,212,.12);  color: #4a8bba; }
+.badge-technical  { background: rgba(155,126,212,.12); color: #8060b8; }
+.badge-cultural   { background: rgba(244,117,107,.12); color: #d45a50; }
+.badge-sports     { background: rgba(109,179,138,.12); color: #4d9a6e; }
+.badge-social     { background: rgba(240,165,0,.12);   color: #a87800; }
+.badge-awareness  { background: rgba(109,179,138,.12); color: #4d9a6e; }
+
+/* EMPTY */
+.admin-empty {
+  text-align: center; padding: 60px 0;
+  color: var(--muted); font-size: 0.9rem; display: none;
+}
+.admin-empty .ei { font-size: 2.5rem; margin-bottom: 10px; }
+
+/* DELETE CONFIRM MODAL */
+.modal-overlay {
+  display: none; position: fixed; inset: 0; z-index: 500;
+  background: rgba(42,31,26,.5);
+  align-items: center; justify-content: center;
+  backdrop-filter: blur(3px);
+}
+.modal-overlay.open { display: flex; }
+.modal-box {
+  background: var(--surface);
+  border-radius: 16px; padding: 36px 32px;
+  max-width: 380px; width: 90%;
+  box-shadow: 0 16px 60px rgba(0,0,0,.15);
+  animation: fadeUp .25s ease;
+  text-align: center;
+}
+.modal-icon { font-size: 2.5rem; margin-bottom: 14px; }
+.modal-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.4rem; font-weight: 700; color: var(--ink);
+  margin-bottom: 8px;
+}
+.modal-sub { font-size: 0.82rem; color: var(--muted); margin-bottom: 26px; line-height: 1.6; }
+.modal-actions { display: flex; gap: 10px; }
+.modal-cancel {
+  flex: 1; padding: 12px;
+  border: 1.5px solid var(--border2); border-radius: 9px;
+  background: none; font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.85rem; font-weight: 600; color: var(--muted);
+  cursor: pointer; transition: border-color .18s, color .18s;
+}
+.modal-cancel:hover { border-color: var(--ink); color: var(--ink); }
+.modal-confirm {
+  flex: 1; padding: 12px;
+  background: var(--danger); border: none; border-radius: 9px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.85rem; font-weight: 700; color: #fff;
+  cursor: pointer; transition: opacity .18s;
+}
+.modal-confirm:hover { opacity: .88; }
+
+@media (max-width: 800px) {
+  .admin-layout { grid-template-columns: 1fr; padding: 20px 16px 60px; }
+  .form-panel { position: static; }
+  .admin-nav { padding: 0 16px; }
+  .login-card { padding: 36px 24px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══ LOGIN SCREEN ══ -->
+<div id="login-screen">
+  <div class="login-blob1"></div>
+  <div class="login-blob2"></div>
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="login-logo-icon">🎓</div>
+      <div class="login-logo-text">SGBIT <span>College</span></div>
+    </div>
+    <div class="login-eyebrow">Organizer Access</div>
+    <div class="login-title">Admin Panel</div>
+    <div class="login-sub">Enter your credentials to manage college events.</div>
+
+    <label class="field-label">Username</label>
+    <input class="field-input" type="text" id="login-user" placeholder="Enter username" autocomplete="off"/>
+
+    <label class="field-label">Password</label>
+    <input class="field-input" type="password" id="login-pass" placeholder="Enter password"
+           onkeydown="if(event.key==='Enter') doLogin()"/>
+
+    <div class="login-error" id="login-error">❌ Incorrect username or password.</div>
+
+    <button class="login-btn" onclick="doLogin()" style="margin-top:20px">Sign In →</button>
+
+    <div class="login-hint">Demo credentials: <code>admin</code> / <code>sgbit2026</code></div>
+    <a href="index.html" class="back-to-site">← Back to events website</a>
+  </div>
+</div>
+
+<!-- ══ ADMIN DASHBOARD ══ -->
+<div id="admin-screen">
+
+  <nav class="admin-nav">
+    <div class="admin-nav-logo">
+      <div class="admin-nav-icon">🎓</div>
+      <div class="admin-nav-title">SGBIT <span>Admin</span></div>
+    </div>
+    <div class="admin-nav-right">
+      <a href="index.html" target="_blank" class="nav-view-site">View Site ↗</a>
+      <button class="logout-btn" onclick="doLogout()">Logout</button>
+    </div>
+  </nav>
+
+  <div class="admin-layout">
+
+    <!-- ADD EVENT FORM -->
+    <div class="form-panel">
+      <div class="panel-header">
+        <div class="panel-header-title">➕ Add New Event</div>
+        <div class="panel-header-sub">Fill in the details and click Publish</div>
+      </div>
+      <div class="form-body">
+
+        <div class="form-row">
+          <label class="form-label">Event Title <span class="req">*</span></label>
+          <input class="form-input" id="f-title" type="text" placeholder="e.g. InnovatEx 2026 Hackathon"/>
+        </div>
+
+        <div class="form-row">
+          <label class="form-label">Category <span class="req">*</span></label>
+          <div class="form-select-wrap">
+            <select class="form-select" id="f-category">
+              <option value="">— Select category —</option>
+              <option value="academic">📚 Academic</option>
+              <option value="technical">💻 Technical</option>
+              <option value="cultural">🎭 Cultural</option>
+              <option value="sports">⚽ Sports</option>
+              <option value="social">🎉 Social / Fest</option>
+              <option value="awareness">🌱 Awareness</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <label class="form-label">Sub-category / Type <span class="req">*</span></label>
+          <input class="form-input" id="f-sub" type="text" placeholder="e.g. Hackathon, Guest Lecture, Cricket"/>
+        </div>
+
+        <div class="form-row">
+          <label class="form-label">Venue <span class="req">*</span></label>
+          <input class="form-input" id="f-venue" type="text" placeholder="e.g. Main Auditorium, Block A"/>
+        </div>
+
+        <div class="form-row form-row-2">
+          <div>
+            <label class="form-label">Event Date <span class="req">*</span></label>
+            <input class="form-input" id="f-date" type="date"/>
+          </div>
+          <div>
+            <label class="form-label">Reg. Deadline <span class="req">*</span></label>
+            <input class="form-input" id="f-regdate" type="date"/>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <label class="form-label">Description <span class="req">*</span></label>
+          <textarea class="form-textarea" id="f-desc" placeholder="Write a short description about the event — what it is, who can participate, prizes, etc."></textarea>
+        </div>
+
+        <div class="form-row">
+          <label class="form-label">Registration Link <span class="req">*</span></label>
+          <input class="form-input" id="f-link" type="url" placeholder="https://forms.gle/your-registration-link"/>
+        </div>
+
+        <button class="submit-btn" onclick="addEvent()">🚀 Publish Event</button>
+
+        <div class="toast" id="success-toast">
+          ✅ Event published successfully!
+        </div>
+        <div class="toast" id="error-toast" style="background:var(--danger-bg);border-color:rgba(192,57,43,.2);color:var(--danger);">
+          ⚠️ Please fill in all required fields.
+        </div>
+
+      </div>
+    </div>
+
+    <!-- EVENTS LIST -->
+    <div class="list-panel">
+      <div class="list-panel-header">
+        <div class="list-panel-title">All Events</div>
+        <div class="list-count">Total: <strong id="admin-count">0</strong></div>
+      </div>
+
+      <div class="list-search-wrap">
+        <span class="list-search-icon">🔍</span>
+        <input class="list-search" type="text" placeholder="Search events…" oninput="adminSearch(this.value)"/>
+      </div>
+
+      <div class="admin-event-list" id="admin-event-list"></div>
+      <div class="admin-empty" id="admin-empty">
+        <div class="ei">📋</div>
+        <p>No events yet. Add your first event using the form.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- DELETE CONFIRM MODAL -->
+<div class="modal-overlay" id="delete-modal">
+  <div class="modal-box">
+    <div class="modal-icon">🗑️</div>
+    <div class="modal-title">Delete this event?</div>
+    <div class="modal-sub" id="modal-event-name">This action cannot be undone.</div>
+    <div class="modal-actions">
+      <button class="modal-cancel" onclick="closeModal()">Cancel</button>
+      <button class="modal-confirm" onclick="confirmDelete()">Yes, Delete</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── AUTH ──
+const CREDS = { username: 'admin', password: 'sgbit2026' };
+
+function doLogin() {
+  const u = document.getElementById('login-user').value.trim();
+  const p = document.getElementById('login-pass').value;
+  const err = document.getElementById('login-error');
+  if (u === CREDS.username && p === CREDS.password) {
+    sessionStorage.setItem('admin_auth', '1');
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('admin-screen').style.display = 'block';
+    loadEvents();
+  } else {
+    err.style.display = 'block';
+    document.getElementById('login-pass').value = '';
+    setTimeout(() => err.style.display='none', 3000);
+  }
+}
+function doLogout() {
+  sessionStorage.removeItem('admin_auth');
+  location.reload();
+}
+if (sessionStorage.getItem('admin_auth') === '1') {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('admin-screen').style.display = 'block';
+}
+
+// ── API ──
+const API = 'http://localhost:8080/api';
+const fmtDay  = s => new Date(s).getDate();
+const fmtMon  = s => new Date(s).toLocaleString('en',{month:'short'}).toUpperCase();
+const fmtShort= s => new Date(s).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
+let allEvents = [];
+
+async function addEvent() {
+  const title   = document.getElementById('f-title').value.trim();
+  const catSlug = document.getElementById('f-category').value;
+  const sub     = document.getElementById('f-sub').value.trim();
+  const venue   = document.getElementById('f-venue').value.trim();
+  const date    = document.getElementById('f-date').value;
+  const regdate = document.getElementById('f-regdate').value;
+  const desc    = document.getElementById('f-desc').value.trim();
+  const link    = document.getElementById('f-link').value.trim();
+  const errToast = document.getElementById('error-toast');
+  const okToast  = document.getElementById('success-toast');
+  if (!title || !catSlug || !sub || !venue || !date || !regdate || !desc || !link) {
+    errToast.classList.add('show'); setTimeout(() => errToast.classList.remove('show'), 3000); return;
+  }
+  try {
+    const catRes = await fetch(`${API}/categories`);
+    const cats   = await catRes.json();
+    const category = cats.find(c => c.slug === catSlug);
+    const payload = { title, subcategory: sub, venue, description: desc,
+      eventDate: date, regDeadline: regdate, regLink: link, category, isNew: true };
+    const res = await fetch(`${API}/events`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    if (!res.ok) throw new Error();
+    ['f-title','f-sub','f-venue','f-date','f-regdate','f-desc','f-link'].forEach(id => document.getElementById(id).value='');
+    document.getElementById('f-category').value = '';
+    okToast.classList.add('show'); setTimeout(() => okToast.classList.remove('show'), 3000);
+    loadEvents();
+  } catch(e) {
+    errToast.classList.add('show'); setTimeout(() => errToast.classList.remove('show'), 3000);
+  }
+}
+
+function renderAdminList(evs, query='') {
+  allEvents = evs;
+  document.getElementById('admin-count').textContent = evs.length;
+  let list = query ? evs.filter(e => e.title.toLowerCase().includes(query.toLowerCase())) : evs;
+  const el  = document.getElementById('admin-event-list');
+  const emp = document.getElementById('admin-empty');
+  el.innerHTML = '';
+  if (!list.length) { emp.style.display='block'; return; }
+  emp.style.display = 'none';
+  const today = new Date(); today.setHours(0,0,0,0);
+  list.forEach((ev, i) => {
+    const regPast = new Date(ev.regDeadline) < today;
+    const slug = ev.category ? ev.category.slug : 'academic';
+    const row = document.createElement('div');
+    row.className = `admin-event-row row-${slug}`;
+    row.style.animationDelay = `${i*.04}s`;
+    row.innerHTML = `
+      <div class="arow-date">
+        <div class="arow-date-day">${fmtDay(ev.eventDate)}</div>
+        <div class="arow-date-mon">${fmtMon(ev.eventDate)}</div>
+      </div>
+      <div class="arow-main">
+        <div class="arow-badge badge-${slug}">${ev.subcategory}</div>
+        <div class="arow-title">${ev.title}</div>
+        <div class="arow-meta">📍 ${ev.venue}</div>
+      </div>
+      <div class="arow-actions">
+        <div class="reg-tag ${regPast?'closed':''}">Reg: ${fmtShort(ev.regDeadline)}</div>
+        <button class="delete-btn" onclick="openDeleteModal(${ev.id},'${ev.title.replace(/'/g,"\'")}')">Delete</button>
+      </div>`;
+    el.appendChild(row);
+  });
+}
+
+async function loadEvents() {
+  try {
+    const res = await fetch(`${API}/events`);
+    const evs = await res.json();
+    renderAdminList(evs);
+  } catch(e) {
+    document.getElementById('admin-empty').style.display='block';
+    document.getElementById('admin-empty').innerHTML='<div class="ei">⚠️</div><p>Cannot connect to server. Make sure Spring Boot is running.</p>';
+  }
+}
+
+function adminSearch(q) { renderAdminList(allEvents, q); }
+
+let pendingDeleteId = null;
+function openDeleteModal(id, title) {
+  pendingDeleteId = id;
+  document.getElementById('modal-event-name').textContent = `"${title}" will be permanently removed.`;
+  document.getElementById('delete-modal').classList.add('open');
+}
+function closeModal() {
+  document.getElementById('delete-modal').classList.remove('open');
+  pendingDeleteId = null;
+}
+async function confirmDelete() {
+  if (!pendingDeleteId) return;
+  await fetch(`${API}/events/${pendingDeleteId}`, { method: 'DELETE' });
+  closeModal(); loadEvents();
+}
+document.getElementById('delete-modal').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+const todayStr = new Date().toISOString().split('T')[0];
+document.getElementById('f-date').min = todayStr;
+document.getElementById('f-regdate').min = todayStr;
+if (sessionStorage.getItem('admin_auth') === '1') loadEvents();
+
+</script>
+</body>
+</html>

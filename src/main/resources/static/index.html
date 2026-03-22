@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>SGBIT College-Events</title>
+<link rel="icon" href="logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --peach:       #ff9a6c;
+  --peach-light: #ffb899;
+  --peach-pale:  #fff1eb;
+  --peach-bg:    #fff8f4;
+  --peach-deep:  #e8673a;
+  --rose:        #f4756b;
+  --gold:        #f0a500;
+  --sage:        #6db38a;
+  --sky:         #5ba4d4;
+  --lavender:    #9b7ed4;
+  --ink:         #2a1f1a;
+  --ink2:        #5a4035;
+  --muted:       #9c7b6e;
+  --muted2:      #c4a393;
+  --border:      rgba(255,154,108,0.18);
+  --border2:     rgba(255,154,108,0.32);
+  --surface:     #ffffff;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--peach-bg); color: var(--ink); min-height: 100vh; overflow-x: hidden; }
+.announce-bar { background: linear-gradient(90deg, var(--peach-deep), var(--rose)); color: #fff; text-align: center; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.05em; padding: 9px 16px; }
+.announce-bar span { opacity: 0.6; margin: 0 10px; }
+nav { position: sticky; top: 0; z-index: 200; background: rgba(255,248,244,0.94); backdrop-filter: blur(18px); border-bottom: 1px solid var(--border2); height: 62px; display: flex; align-items: center; justify-content: space-between; padding: 0 48px; }
+.nav-logo { display: flex; align-items: center; gap: 10px; }
+.nav-logo-icon { width: 34px; height: 34px; background: linear-gradient(135deg, var(--peach), var(--peach-deep)); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1rem; }
+.nav-logo-text { font-family: 'Cormorant Garamond', serif; font-size: 1.25rem; font-weight: 700; color: var(--ink); }
+.nav-logo-text span { color: var(--peach-deep); }
+.nav-links { display: flex; align-items: center; gap: 4px; list-style: none; }
+.nav-links a { font-size: 0.78rem; font-weight: 600; color: var(--muted); text-decoration: none; padding: 6px 13px; border-radius: 20px; transition: background .18s, color .18s; cursor: pointer; }
+.nav-links a:hover { background: var(--peach-pale); color: var(--peach-deep); }
+.admin-btn { font-size: 0.78rem; font-weight: 700; padding: 8px 18px; border-radius: 8px; background: var(--ink); color: #fff; text-decoration: none; transition: background .18s; }
+.admin-btn:hover { background: var(--peach-deep); }
+.hero { position: relative; overflow: hidden; padding: 88px 48px 80px; min-height: 85vh; display: flex; flex-direction: column; justify-content: center; }
+.hero-blob1 { position: absolute; top: -100px; right: -80px; width: 560px; height: 560px; border-radius: 50%; background: radial-gradient(circle, rgba(255,154,108,0.2) 0%, transparent 70%); pointer-events: none; }
+.hero-blob2 { position: absolute; bottom: -80px; left: -100px; width: 440px; height: 440px; border-radius: 50%; background: radial-gradient(circle, rgba(244,117,107,0.13) 0%, transparent 70%); pointer-events: none; }
+.hero-dots { position: absolute; inset: 0; pointer-events: none; opacity: 0.3; background-image: radial-gradient(circle, rgba(255,154,108,0.6) 1px, transparent 1px); background-size: 30px 30px; mask-image: radial-gradient(ellipse 75% 75% at 85% 15%, black 0%, transparent 65%); }
+.hero-inner { position: relative; max-width: 780px; }
+.hero-welcome { display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, #fff1eb, #ffe8de); border: 1px solid var(--border2); border-radius: 30px; padding: 7px 18px; font-size: 0.8rem; font-weight: 700; color: var(--peach-deep); letter-spacing: 0.04em; margin-bottom: 26px; animation: fadeDown .5s ease both; }
+@keyframes fadeDown { from{opacity:0;transform:translateY(-10px)} to{opacity:1;transform:translateY(0)} }
+@keyframes fadeUp   { from{opacity:0;transform:translateY(16px)}  to{opacity:1;transform:translateY(0)} }
+.hero h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(3rem, 7vw, 5.8rem); font-weight: 700; line-height: 1.0; letter-spacing: -0.01em; color: var(--ink); margin-bottom: 10px; animation: fadeUp .6s .1s ease both; }
+.hero h1 .italic-line { display: block; color: var(--peach-deep); font-style: italic; }
+.hero-tagline { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.1rem, 2.5vw, 1.5rem); font-style: italic; color: var(--muted); margin-bottom: 20px; animation: fadeUp .6s .2s ease both; }
+.hero-desc { font-size: 0.98rem; color: var(--ink2); line-height: 1.82; max-width: 540px; margin-bottom: 40px; font-weight: 400; animation: fadeUp .6s .3s ease both; }
+.hero-cta { display: flex; align-items: center; gap: 14px; animation: fadeUp .6s .4s ease both; }
+.cta-main { display: inline-flex; align-items: center; gap: 8px; padding: 14px 28px; background: linear-gradient(135deg, var(--peach), var(--peach-deep)); color: #fff; font-size: 0.9rem; font-weight: 700; border-radius: 10px; text-decoration: none; box-shadow: 0 4px 22px rgba(232,103,58,.35); transition: transform .18s, box-shadow .18s; }
+.cta-main:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(232,103,58,.45); }
+.hero-float { position: absolute; top: 52px; right: 80px; background: #fff; border: 1px solid var(--border2); border-radius: 16px; padding: 18px 22px; box-shadow: 0 8px 36px rgba(255,154,108,.2); text-align: center; animation: float 4s ease-in-out infinite; }
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+.float-num { font-family: 'Cormorant Garamond', serif; font-size: 2.6rem; font-weight: 700; color: var(--peach-deep); line-height: 1; }
+.float-lbl { font-size: 0.62rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin-top: 4px; }
+.stats-bar { background: linear-gradient(90deg, var(--peach-deep), var(--rose)); display: flex; justify-content: center; }
+.stat-item { flex: 1; max-width: 220px; padding: 24px 16px; text-align: center; border-right: 1px solid rgba(255,255,255,0.15); }
+.stat-item:last-child { border-right: none; }
+.stat-num { font-family: 'Cormorant Garamond', serif; font-size: 2.3rem; font-weight: 700; color: #fff; line-height: 1; }
+.stat-lbl { font-size: 0.67rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.6); margin-top: 5px; }
+.cat-section { padding: 64px 48px 56px; background: var(--surface); }
+.sec-eyebrow { font-size: 0.68rem; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--peach-deep); margin-bottom: 6px; }
+.sec-title { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 700; color: var(--ink); margin-bottom: 30px; }
+.cat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(155px, 1fr)); gap: 12px; }
+.cat-tile { background: var(--peach-bg); border: 1.5px solid var(--border); border-radius: 14px; padding: 22px 16px 18px; cursor: pointer; transition: transform .2s, box-shadow .2s, border-color .2s; }
+.cat-tile:hover { transform: translateY(-3px); box-shadow: 0 8px 26px rgba(255,154,108,.18); border-color: var(--border2); }
+.cat-tile.active { border-color: var(--peach-deep); background: #fff1eb; box-shadow: 0 0 0 3px rgba(232,103,58,.12); }
+.cat-icon { font-size: 1.7rem; margin-bottom: 10px; display: block; }
+.cat-name { font-size: 0.86rem; font-weight: 700; color: var(--ink); margin-bottom: 2px; }
+.cat-count { font-size: 0.7rem; color: var(--muted); font-weight: 500; }
+.events-section { padding: 52px 48px 100px; background: var(--peach-bg); }
+.events-head { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 22px; padding-bottom: 18px; border-bottom: 2px solid var(--border2); flex-wrap: wrap; gap: 10px; }
+.count-note { font-size: 0.78rem; color: var(--muted); font-weight: 500; }
+.count-note strong { color: var(--peach-deep); }
+.search-wrap { position: relative; margin-bottom: 20px; }
+.search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--muted2); font-size: 0.9rem; }
+.search-input { width: 100%; max-width: 400px; padding: 11px 16px 11px 40px; border: 1.5px solid var(--border2); border-radius: 10px; background: var(--surface); font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.87rem; color: var(--ink); outline: none; transition: border-color .18s, box-shadow .18s; }
+.search-input:focus { border-color: var(--peach); box-shadow: 0 0 0 3px rgba(255,154,108,.15); }
+.search-input::placeholder { color: var(--muted2); }
+.event-list { display: flex; flex-direction: column; gap: 10px; }
+.event-row { display: grid; grid-template-columns: 72px 1fr auto; align-items: center; gap: 0 22px; padding: 18px 22px; background: var(--surface); border: 1.5px solid var(--border); border-radius: 14px; text-decoration: none; color: inherit; transition: border-color .2s, transform .2s, box-shadow .2s; animation: rowIn .35s ease both; position: relative; overflow: hidden; }
+.event-row::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; border-radius: 14px 0 0 14px; background: var(--row-accent, var(--peach)); }
+@keyframes rowIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+.event-row:hover { border-color: var(--border2); transform: translateX(5px); box-shadow: 0 4px 20px rgba(255,154,108,.13); }
+.event-row:hover .row-arrow { opacity: 1; color: var(--peach-deep); }
+.row-date { text-align: center; background: var(--peach-pale); border-radius: 10px; padding: 10px 8px; }
+.row-date-day { font-family: 'Cormorant Garamond', serif; font-size: 1.75rem; font-weight: 700; color: var(--peach-deep); line-height: 1; }
+.row-date-mon { font-size: 0.58rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-top: 2px; }
+.row-main { min-width: 0; }
+.row-badge { display: inline-flex; align-items: center; gap: 4px; font-size: 0.6rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; padding: 2px 8px; border-radius: 4px; margin-bottom: 6px; }
+.row-title { font-family: 'Cormorant Garamond', serif; font-size: 1.12rem; font-weight: 700; color: var(--ink); margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.row-meta { font-size: 0.74rem; color: var(--muted); }
+.row-right { flex-shrink: 0; display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+.row-deadline { text-align: right; font-size: 0.68rem; line-height: 1.5; color: var(--muted); }
+.row-deadline strong { display: block; font-size: 0.76rem; color: var(--rose); font-weight: 700; }
+.row-arrow { font-size: 1rem; opacity: 0; transition: opacity .18s, color .18s; }
+.new-tag { position: absolute; top: 10px; right: 14px; font-size: 0.55rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; background: linear-gradient(135deg, var(--peach), var(--peach-deep)); color: #fff; padding: 2px 7px; border-radius: 4px; }
+.row-academic   { --row-accent: #5ba4d4; }
+.row-technical  { --row-accent: #9b7ed4; }
+.row-cultural   { --row-accent: #f4756b; }
+.row-sports     { --row-accent: #6db38a; }
+.row-social     { --row-accent: #f0a500; }
+.row-awareness  { --row-accent: #6db38a; }
+.badge-academic   { background: rgba(91,164,212,.12);  color: #4a8bba; }
+.badge-technical  { background: rgba(155,126,212,.12); color: #8060b8; }
+.badge-cultural   { background: rgba(244,117,107,.12); color: #d45a50; }
+.badge-sports     { background: rgba(109,179,138,.12); color: #4d9a6e; }
+.badge-social     { background: rgba(240,165,0,.12);   color: #a87800; }
+.badge-awareness  { background: rgba(109,179,138,.12); color: #4d9a6e; }
+.empty-state { text-align: center; padding: 72px 0; display: none; }
+.empty-state .ei { font-size: 2.8rem; margin-bottom: 12px; }
+.empty-state p { color: var(--muted); font-size: 0.95rem; }
+.loading { text-align: center; padding: 60px 0; color: var(--muted); font-size: 0.95rem; }
+footer { background: var(--ink); color: rgba(255,255,255,.35); text-align: center; padding: 26px 48px; font-size: 0.75rem; letter-spacing: .04em; }
+footer strong { color: rgba(255,255,255,.6); }
+@media (max-width: 700px) {
+  nav { padding: 0 18px; } .nav-links { display: none; }
+  .hero { padding: 50px 18px 56px; min-height: auto; } .hero-float { display: none; }
+  .cat-section, .events-section { padding: 36px 18px 60px; }
+  .cat-grid { grid-template-columns: repeat(3, 1fr); }
+  .event-row { grid-template-columns: 60px 1fr 20px; gap: 0 12px; padding: 14px 14px; }
+  .row-right .row-deadline { display: none; }
+  .stats-bar { flex-wrap: wrap; } .stat-item { min-width: 50%; }
+}
+</style>
+</head>
+<body>
+
+<div class="announce-bar">
+   <span>·</span> Biggest college fest of the year — don't miss it
+</div>
+
+<nav>
+  <div class="nav-logo">
+    <div class="nav-logo-icon">🎓</div>
+    <div class="nav-logo-text">SGBIT <span>College</span></div>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#events" onclick="filterCat('all');return false;">All Events</a></li>
+    <li><a href="#events" onclick="filterCat('academic');return false;">Academic</a></li>
+    <li><a href="#events" onclick="filterCat('technical');return false;">Technical</a></li>
+    <li><a href="#events" onclick="filterCat('cultural');return false;">Cultural</a></li>
+    <li><a href="#events" onclick="filterCat('sports');return false;">Sports</a></li>
+    <li><a href="#events" onclick="filterCat('social');return false;">Social</a></li>
+  </ul>
+  <a href="admin.html" class="admin-btn">Admin Panel</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-blob1"></div>
+  <div class="hero-blob2"></div>
+  <div class="hero-dots"></div>
+  <div class="hero-inner">
+    <div class="hero-welcome">🌸 Welcome to SGBIT College Events</div>
+    <h1>Where Campus Moments<br/><span class="italic-line">Turn Into Memories.</span></h1>
+    <div class="hero-tagline">Don't miss what's happening.</div>
+    <p class="hero-desc">Every seminar, hackathon, cultural fest, and sports meet at SGBIT College — listed in one place, always up to date.</p>
+    <div class="hero-cta">
+      <a href="#events" class="cta-main">Browse All Events ↓</a>
+    </div>
+  </div>
+  <div class="hero-float">
+    <div class="float-num" id="float-num">...</div>
+    <div class="float-lbl">Events Live</div>
+  </div>
+</section>
+
+<div class="stats-bar">
+  <div class="stat-item">
+    <div class="stat-num" id="stat-total">...</div>
+    <div class="stat-lbl">Active Events</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">6</div>
+    <div class="stat-lbl">Categories</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">2026</div>
+    <div class="stat-lbl">Academic Year</div>
+  </div>
+</div>
+
+<section class="cat-section">
+  <div class="sec-eyebrow">Browse By Category</div>
+  <div class="sec-title">What are you looking for?</div>
+  <div class="cat-grid">
+    <div class="cat-tile active" data-cat="all"       onclick="filterCat('all')"><span class="cat-icon">✨</span><div class="cat-name">All Events</div><div class="cat-count" id="cnt-all">...</div></div>
+    <div class="cat-tile" data-cat="academic"         onclick="filterCat('academic')"><span class="cat-icon">📚</span><div class="cat-name">Academic</div><div class="cat-count" id="cnt-academic">0</div></div>
+    <div class="cat-tile" data-cat="technical"        onclick="filterCat('technical')"><span class="cat-icon">💻</span><div class="cat-name">Technical</div><div class="cat-count" id="cnt-technical">0</div></div>
+    <div class="cat-tile" data-cat="cultural"         onclick="filterCat('cultural')"><span class="cat-icon">🎭</span><div class="cat-name">Cultural</div><div class="cat-count" id="cnt-cultural">0</div></div>
+    <div class="cat-tile" data-cat="sports"           onclick="filterCat('sports')"><span class="cat-icon">⚽</span><div class="cat-name">Sports</div><div class="cat-count" id="cnt-sports">0</div></div>
+    <div class="cat-tile" data-cat="social"           onclick="filterCat('social')"><span class="cat-icon">🎉</span><div class="cat-name">Social / Fest</div><div class="cat-count" id="cnt-social">0</div></div>
+    <div class="cat-tile" data-cat="awareness"        onclick="filterCat('awareness')"><span class="cat-icon">🌱</span><div class="cat-name">Awareness</div><div class="cat-count" id="cnt-awareness">0</div></div>
+  </div>
+</section>
+
+<section class="events-section" id="events">
+  <div class="events-head">
+    <div>
+      <div class="sec-eyebrow">Soonest First</div>
+      <div class="sec-title" style="margin-bottom:0" id="list-title">All Events</div>
+    </div>
+    <div class="count-note">Showing <strong id="showing-count">0</strong> events</div>
+  </div>
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input class="search-input" id="search-input" type="text" placeholder="Search by name or venue…" oninput="onSearch()"/>
+  </div>
+  <div class="event-list" id="event-list">
+    <div class="loading">Loading events...</div>
+  </div>
+  <div class="empty-state" id="empty-state">
+    <div class="ei">🌸</div>
+    <p>No events found. Try a different filter or search term.</p>
+  </div>
+</section>
+
+<footer>
+  &copy; 2026 <strong>SGBIT College</strong> · All details subject to change.
+</footer>
+
+<script>
+const API = 'http://localhost:8080/api';
+const catLabels = { academic:'Academic', technical:'Technical', cultural:'Cultural', sports:'Sports', social:'Social / Fest', awareness:'Awareness' };
+const fmtDay   = s => new Date(s).getDate();
+const fmtMon   = s => new Date(s).toLocaleString('en',{month:'short'}).toUpperCase();
+const fmtShort = s => new Date(s).toLocaleDateString('en-IN',{day:'numeric',month:'short'});
+
+let allEvents = [];
+let activeCat = 'all';
+let searchTerm = '';
+
+// ── FETCH events from Spring Boot API ──
+async function loadEvents() {
+  try {
+    const res = await fetch(`${API}/events`);
+    allEvents = await res.json();
+    updateCounts();
+    render();
+  } catch(e) {
+    document.getElementById('event-list').innerHTML =
+      '<div class="loading">⚠️ Could not connect to server. Make sure Spring Boot is running.</div>';
+  }
+}
+
+function updateCounts() {
+  const n = allEvents.length;
+  document.getElementById('float-num').textContent  = n;
+  document.getElementById('stat-total').textContent = n;
+  document.getElementById('cnt-all').textContent = n + ' event' + (n!==1?'s':'');
+  ['academic','technical','cultural','sports','social','awareness'].forEach(c => {
+    const count = allEvents.filter(e => e.category.slug === c).length;
+    document.getElementById('cnt-'+c).textContent = count + ' event' + (count!==1?'s':'');
+  });
+}
+
+function render() {
+  const today = new Date(); today.setHours(0,0,0,0);
+  let list = activeCat === 'all' ? allEvents : allEvents.filter(e => e.category.slug === activeCat);
+  if (searchTerm) {
+    const q = searchTerm.toLowerCase();
+    list = list.filter(e => e.title.toLowerCase().includes(q) || e.venue.toLowerCase().includes(q));
+  }
+  document.getElementById('showing-count').textContent = list.length;
+  document.getElementById('list-title').textContent = activeCat === 'all' ? 'All Events' : catLabels[activeCat];
+  const el = document.getElementById('event-list');
+  const em = document.getElementById('empty-state');
+  el.innerHTML = '';
+  if (!list.length) { em.style.display='block'; return; }
+  em.style.display = 'none';
+  list.forEach((ev, i) => {
+    const regClosed = new Date(ev.regDeadline) < today;
+    const slug = ev.category.slug;
+    const a = document.createElement('a');
+    a.className = `event-row row-${slug}`;
+    a.href = `event.html?id=${ev.id}`;
+    a.style.animationDelay = `${i * .05}s`;
+    a.innerHTML = `
+      ${ev.isNew ? '<div class="new-tag">New</div>' : ''}
+      <div class="row-date">
+        <div class="row-date-day">${fmtDay(ev.eventDate)}</div>
+        <div class="row-date-mon">${fmtMon(ev.eventDate)}</div>
+      </div>
+      <div class="row-main">
+        <div class="row-badge badge-${slug}">${ev.subcategory}</div>
+        <div class="row-title">${ev.title}</div>
+        <div class="row-meta">📍 ${ev.venue}</div>
+      </div>
+      <div class="row-right">
+        <div class="row-deadline">${regClosed?'Reg. closed':'Reg. closes'}<strong style="${regClosed?'color:var(--muted)':''}">${fmtShort(ev.regDeadline)}</strong></div>
+        <div class="row-arrow">→</div>
+      </div>`;
+    el.appendChild(a);
+  });
+}
+
+function filterCat(cat) {
+  activeCat = cat; searchTerm = '';
+  document.getElementById('search-input').value = '';
+  document.querySelectorAll('.cat-tile').forEach(t => t.classList.toggle('active', t.dataset.cat === cat));
+  render();
+  document.getElementById('events').scrollIntoView({behavior:'smooth'});
+}
+
+function onSearch() {
+  searchTerm = document.getElementById('search-input').value.trim();
+  render();
+}
+
+loadEvents();
+</script>
+</body>
+</html>
