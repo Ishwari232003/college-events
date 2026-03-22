@@ -1,4 +1,17 @@
 # 🎓  College Event Management System
+## 📌 Problem Statement
+
+In college, students miss many events like seminars, hackathons,
+cultural fests, and sports meets because:
+
+- Event info is scattered across multiple WhatsApp groups
+- Notice boards are not always visible to everyone
+- There is no centralized platform to track all events
+- Registration links are hard to find
+
+This project provides a single platform where all events are
+listed with dates, venue, description, and direct registration
+links — so no student misses an opportunity.
 
 A full-stack web application to manage and display college events.
 
